@@ -1,0 +1,42 @@
+.home{
+    display: flex;
+    height: 90vh;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+}
+
+.container{
+    width: 50%;
+    height: 90%;
+    margin: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    font-family: 'Dancing Script', cursive;
+    color: white;
+}
+
+.titlename{
+    color: #32CD32;
+    font-size: 80px;
+    font-family: 'Dancing Script', cursive;
+}
+
+@media screen and (max-width: 768px) {
+    .home{
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+    }
+    .container{
+        width: 90%;
+        font-size: 20px;
+        text-align: center;
+    }
+    .titlename{
+        font-size: 50px;
+    }
+}

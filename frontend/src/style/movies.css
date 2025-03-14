@@ -1,0 +1,156 @@
+.movie {
+    background-color: #121212;
+    color: #ffffff;
+    min-height: 100vh;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .admin-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #00ff99;
+    margin-bottom: 20px;
+  }
+  
+  /* Movie Header */
+  .movieHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  
+  .adsearch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .adsearch input {
+    padding: 10px;
+    border: 2px solid #00ff99;
+    border-radius: 5px;
+    background-color: transparent;
+    color: #ffffff;
+    outline: none;
+    font-size: 1rem;
+  }
+  
+  .adsearch input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .aSearch {
+    background-color: #00ff99;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .aSearch:hover {
+    background-color: #00cc77;
+  }
+  
+  /* Create Movie Button */
+  .create {
+    background-color: #00ff99;
+    color: #121212;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .create:hover {
+    background-color: #00cc77;
+  }
+  
+  /* Movie List */
+  .movieItem {
+    background-color: #1e1e1e;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 255, 153, 0.2);
+  }
+  
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 1.1rem;
+  }
+  
+  /* Edit and Delete Buttons */
+  .row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .edit, .delete {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: 0.3s;
+  }
+  
+  .edit {
+    background-color: #00ff99;
+    color: #121212;
+  }
+  
+  .edit:hover {
+    background-color: #00cc77;
+  }
+  
+  .delete {
+    background-color: #ff4444;
+    color: white;
+  }
+  
+  .delete:hover {
+    background-color: #cc0000;
+  }
+  
+  /* No Movies Found */
+  p {
+    text-align: center;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .movieHeader {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .adsearch {
+      width: 100%;
+      justify-content: center;
+    }
+  
+    .adsearch input {
+      width: 80%;
+    }
+  
+    .row {
+      justify-content: center;
+    }
+  }
+  

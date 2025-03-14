@@ -1,0 +1,90 @@
+.loginbody{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: black;
+}
+
+.loginbox{
+    background-color: #121212;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 255, 0, 0.2);
+    width: 350px;
+    text-align: center;
+}
+
+.login h2{
+    color: white;
+    margin-bottom: 1.5rem;
+    font-size: 24px;
+}
+
+.logindetails{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.userNameoremail,
+.loginpassword{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.userNameoremail label,
+.loginpassword label{
+    color: white;
+    font-size: 14px;
+    margin-bottom: 0.3rem;
+}
+
+.userNameoremail input,
+.loginpassword input{
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #00ff00;
+    border-radius: 6px;
+    background-color: #1a1a1a;
+    color: white;
+    outline: none;
+}
+
+.logsubmit{
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.logsubmit .log{
+    width: 100%;
+    padding: 0.7rem;
+    background-color: #00ff00;
+    border: none;
+    border-radius: 6px;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3es;
+}
+
+.logsubmit .log:hover{
+    background-color: #00cc00;
+}
+
+@media (max-width: 400px){
+    .loginbox{
+        width: 90%;
+        padding: 1.5rem;
+    }
+    .login h2{
+        font-size: 20px;
+    }
+    .logsubmit.log{
+        font-size: 14px;
+    }
+}
