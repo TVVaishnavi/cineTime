@@ -11,6 +11,9 @@ describe('Login Page Tests', () => {
     cy.get('button.submit').should('exist').and('be.visible'); 
     cy.contains('Create account').should('exist').and('be.visible');
 
+    // Add this check for unexpected error messages
+    cy.get('.error-message').should('not.exist');
+
     // Add Percy snapshot here
     cy.percySnapshot('Login Page');
   });
@@ -22,6 +25,9 @@ describe('Login Page Tests', () => {
 
     cy.get('@alertStub').should('have.been.calledWith', 'please enter both email and password'); 
 
+    // Check for unexpected errors
+    cy.get('.error-message').should('not.exist');
+
     // Add Percy snapshot here
     cy.percySnapshot('Alert Missing Credentials');
   });
@@ -32,6 +38,9 @@ describe('Login Page Tests', () => {
 
     cy.get('input[placeholder="Enter userEmail"]').should('have.value', 'test@example.com');
     cy.get('input[placeholder="Enter New password"]').should('have.value', 'password123');
+
+    // Ensure no error message is displayed
+    cy.get('.error-message').should('not.exist');
 
     // Add Percy snapshot here
     cy.percySnapshot('Typing in Credentials');
@@ -55,6 +64,9 @@ describe('Login Page Tests', () => {
   
     cy.get('@alertStub').should('not.have.been.called');
   
+    // Check for unexpected errors
+    cy.get('.error-message').should('not.exist');
+
     cy.url().should('include', '/login');
 
     // Add Percy snapshot here
@@ -64,6 +76,9 @@ describe('Login Page Tests', () => {
   it('should navigate to signup page when clicking "Create account"', () => {
     cy.contains('Create account').click();
     cy.url().should('include', '/signup'); 
+
+    // Ensure no error message is displayed
+    cy.get('.error-message').should('not.exist');
 
     // Add Percy snapshot here
     cy.percySnapshot('Signup Page Navigation');

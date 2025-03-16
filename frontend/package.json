@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@cypress/react": "^9.0.0",
+    "@percy/cli": "^1.30.7",
     "@percy/cypress": "^3.1.4",
     "cypress": "^14.2.0"
   }
