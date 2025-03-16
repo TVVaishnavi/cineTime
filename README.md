@@ -1,4 +1,4 @@
-# bookMyShow 
+# CineTime
 
 ## Description
 
