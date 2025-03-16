@@ -2,17 +2,17 @@
 
 ## Description
 
-This repository contains the backend for the BookMyShow application. The application is built using Express.js for the server, MongoDB for the database, and Jest for unit testing. Users can sign up and log in, browse movies and theatres, select seats, book tickets, and cancel bookings. Admins can directly log in to manage the system.
+This repository contains both the backend and frontend for the CineTime application. The backend is built using Express.js for the server, MongoDB for the database, and Jest for unit testing. The Frontend is developed using React.js with HTML/CSS for the user interface. Users can sign up and log in, browse movies, select theatres, choose seats, and book tickets. The application also includes a user profile page. Admins can directly log in to manage the system. Cypress is used for UI testing, and Percy is integrated for visual testing.
 
 ## Features
 
-* **User Authentication** : Users can sign up and log in to their accounts.
+* **User Authentication**: Users can sign up and log in to their accounts.
 * **Admin Authentication** : Admins can log in directly.
-* **Movie and Theatre Listings** : Users can browse available movies and theatres.
+* **Movie and Theatre Listings**: Users can browse available movies and theatres.
 * **Seat Selection and Ticket Booking** :
 * Users can select available seats and book tickets for movies.
 * There is a time limit for selecting seats. If the booking isn't completed within the time limit, the seat selection is undone.
-* **Ticket Cancellation** : Users can cancel their booked tickets.
+* **Ticket Cancellation**: Users can cancel their booked tickets.
 
 ## Installation
 
@@ -22,8 +22,8 @@ To install and run this project locally:
   bash
 
 ```
-git clonehttps://github.com/TVVaishnavi/bookMyShow.git
-cdbookMyShow
+git clone https://github.com/TVVaishnavi/cineTime.git
+cd cineTime
 ```
 
 * Install dependencies:
@@ -48,6 +48,14 @@ cp.env.example .env
   bash
 
 ```
+cd Backend
+npm run dev
+```
+*Start the app:
+  bash
+
+```
+cd frontend
 npm start
 ```
 
