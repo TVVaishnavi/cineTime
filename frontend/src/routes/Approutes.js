@@ -26,7 +26,7 @@ function Approutes() {
       <Route path='/home' element={<Home />} />
       <Route path='/movieresult' element={<MovieResult />} />
       <Route path='/theatreselect/:title' element={<TheatreSelect />} />
-      <Route path='/theatrelayout' element={<TheatreLayout />} />
+      <Route path='/TheatreLayout' element={<TheatreLayout />} />
       <Route path='/ticket' element={<Ticket />} />
       <Route path='/Profile' element={<Profile/>}/>
 

@@ -14,7 +14,8 @@ const TheatreSeatGenerator = ({ seatData, rowLabel, seatType, bookedSeats, selec
             key={seatNumber}
             className={`seat ${seatType} ${isBooked ? "booked" : ""} ${isSelected ? "selected" : ""}`}
             onClick={() => !isBooked && onSeatSelect(seatNumber)}
-            disabled={isBooked} 
+            disabled={isBooked}
+            data-seat={seatNumber} // ✅ Added for Cypress testing
           >
             {seatNumber}
           </button>

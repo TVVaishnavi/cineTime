@@ -1,20 +1,21 @@
 const {  bookMovieTicket , cancelMovieTicket } = require('../service/ticket');
 
-const bookTicket = async (req, res) => {
-    try {
-        const { user, movieTitle, theatreName, showTime, seatNumbers, totalPrice } = req.body;
-        
-        const ticket = await bookMovieTicket(user, movieTitle, theatreName, showTime, seatNumbers, totalPrice);
-        
-        if (ticket.error) {
-           res.status(400).json({ message: ticket.error });
-        }
+// controllers/bookingController.js
+const bookTicket = (req, res) => {
+    console.log("Received request body:", req.body); // Debugging
 
-        res.status(201).json({ message: 'Ticket booked successfully', data: ticket });
-    } catch (error) {
-        res.status(400).json({ message: error.message });
+    const { user, movieTitle, theatreName, showTime, seatNumbers, totalPrice } = req.body;
+
+    if (!user || !movieTitle || !theatreName || !showTime || !seatNumbers || !totalPrice) {
+        return res.status(400).json({ error: "Missing required fields" });
     }
+
+    res.json({
+        message: "Booking successful",
+        ticket: { user, movieTitle, theatreName, showTime, seatNumbers, totalPrice }
+    });
 };
+
 
 
 

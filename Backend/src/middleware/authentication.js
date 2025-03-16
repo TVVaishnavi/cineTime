@@ -1,5 +1,9 @@
 const jwt = require("jsonwebtoken")
 const {secretKey}=require('../config/jwtToken')
+const express = require('express')
+const app = express()
+
+app.use(express.json())
 require('dotenv').config()
 
 

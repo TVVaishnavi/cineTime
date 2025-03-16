@@ -2,34 +2,27 @@ const Movie = require("../model/movie");
 const Ticket = require("../model/ticket");
 const mongoose = require("mongoose");
 
-const bookMovieTicket = async (user, movieTitle, theatreName, showTime, seatNumbers, totalPrice) => {
+const bookMovieTicket = async (req, res) => {
+    const { user, movieTitle, theatreName, showTime, seatNumbers, totalPrice } = req.body;
+    const session = await Movie.startSession();
+    session.startTransaction();
+
     try {
-        console.log(movieTitle)
-        const existedMovie = await Movie.findOne({ title: movieTitle })
+        console.log(movieTitle);
+        const existedMovie = await Movie.findOne({ title: movieTitle }).session(session);
+
         if (!existedMovie) {
             throw new Error("Movie not found");
         }
-        const seat=[...existedMovie.bookedSeats,...seatNumbers]
-        const updatedata={
-            posterURL: existedMovie.posterURL,
-            title: existedMovie.title,
-            description: existedMovie.description,
-            genre: existedMovie.genre,
-            releaseDate: existedMovie.releaseDate,
-            director: existedMovie.director,
-            cast:existedMovie.cast,
-            rating: existedMovie.rating,
-            duration:existedMovie.duration,
-            language:existedMovie.language,
-            
-            theatres: existedMovie.theatres,
-          
-            availableSeats: existedMovie.availableSeats, 
-            bookedSeats:seat, 
-            createdAt:existedMovie.createdAt
-        }
 
-        await Movie.findOneAndUpdate({_id:existedMovie._id},{$set:updatedata})
+        const updatedSeats = existedMovie.bookedSeats ? [...existedMovie.bookedSeats, ...seatNumbers] : seatNumbers;
+
+        const updateData = {
+            ...existedMovie.toObject(),
+            bookedSeats: updatedSeats,
+        };
+
+        await Movie.findOneAndUpdate({ _id: existedMovie._id }, { $set: updateData }, { session });
 
         const ticketData = {
             user,
@@ -37,21 +30,25 @@ const bookMovieTicket = async (user, movieTitle, theatreName, showTime, seatNumb
             theatreName,
             showTime,
             seatNumbers,
-            totalPrice
+            totalPrice,
         };
-       console.log(ticketData)
+
+        console.log(ticketData);
+
         const bookTicket = new Ticket(ticketData);
-        bookTicket.save(); 
-        console.log("bjhb")
-        return { message: "Ticket booked successfully", data: bookTicket };
-    } catch (error) {
-        await session.abortTransaction(); 
+        await bookTicket.save({ session });
+
+        await session.commitTransaction();
         session.endSession();
-        return { error: error.message };
+
+        return res.json({ message: "Ticket booked successfully", data: bookTicket });
+    } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
+
+        return res.status(400).json({ error: error.message }); // Ensure only one response is sent
     }
 };
-
-
 
 
 const cancelMovieTicket = async (id) => {

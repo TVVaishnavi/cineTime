@@ -1,19 +1,11 @@
-const {updateMovie, deleteMovie, getMovieByName,getMovies, bookSeat} = require("../service/movie")
-const Movie = require("../model/movie")
+const { updateMovie, deleteMovie, getMovieByName, getMovies, bookSeat } = require("../service/movie");
+const Movie = require("../model/movie");
 
 const createMovieController = async (req, res) => {
     try {
-        const modata = req.body;
-        
-        const availableSeats = {
-            premium: { rowA: [1,2,3,4,5,6,7,8,9,10], rowB: [1,2,3,4,5,6,7,8,9,10] },
-            regular: { rowC: [1,2,3,4,5,6,7,8,9,10], rowD: [1,2,3,4,5,6,7,8,9,10], rowE: [1,2,3,4,5,6,7,8,9,10] },
-            recliner: { rowF: [1,2,3,4,5] }
-        };
-  
-        const movie = new Movie(modata);
+        const movieData = req.body;
+        const movie = new Movie(movieData);
         await movie.save();
-  
         console.log("Movie saved:", movie);
         res.status(201).json({ message: "Movie created successfully", movie });
     } catch (error) {
@@ -21,86 +13,92 @@ const createMovieController = async (req, res) => {
         res.status(500).json({ message: "Error creating movie", error: error.message });
     }
 };
-  
-const updateMovieController = async(req,res)=>{
-    const movieId = req.params["movieId"]
-    const updateData = req.body
-    console.log(movieId)
+
+const updateMovieController = async (req, res) => {
     try {
-        const updatedMovie = await updateMovie(movieId, updateData)
-        return res.status(200).json({message: "movie updated successfully", movie: updatedMovie})
+        const movieId = req.params.movieId;
+        const updateData = req.body;
+        const updatedMovie = await updateMovie(movieId, updateData);
+        res.status(200).json({ message: "Movie updated successfully", movie: updatedMovie });
     } catch (error) {
-        return res.status(500).json({message: error.message})
+        console.error("Error updating movie:", error.message);
+        res.status(500).json({ message: "Error updating movie", error: error.message });
     }
-}
-
-const deleteMovieController = async (req, res) => {
-    const movieId = req.params.movieId;
-    try {
-      await deleteMovie(movieId);
-      return res.status(200).json({ message: "Movie deleted successfully" });
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
-}
-
-const searchMovies = async (req, res) => {
-  try {
-      const { title, genre, director, language } = req.body
-      console.log("cmckm:",req.body)
-      const filter = {}
-      if (title) filter.title = { $regex: title, $options: 'i' }
-      if (genre) filter.genre = { $regex: genre, $options: 'i' }
-      if (director) filter.director = { $regex: director, $options: 'i' }
-      if (language) filter.language = { $regex: language, $options: 'i' }
-      
-      const movies = await getMovies(filter)
-      
-      return res.status(200).json(movies)
-  } catch (error) {
-      console.error("Error fetching movies:", error)
-      return res.status(500).json({ message: "Error searching movies", error: error.message })
-  }
-}
-
-const getMovieByNameController = async (req, res) => {
-  const movieName = req.params['moviename'];
-  console.log("Received request to find movie:", movieName);
-
-  if (!movieName || movieName.includes(":")) {
-      return res.status(400).json({ message: "Invalid movie name" });
-  }
-
-  try {
-      const movie = await getMovieByName(movieName);
-      return res.status(200).json({ movie });
-  } catch (error) {
-      return res.status(500).json({ message: error.message });
-  }
 };
 
+const deleteMovieController = async (req, res) => {
+    try {
+        const movieId = req.params.movieId;
+        await deleteMovie(movieId);
+        res.status(200).json({ message: "Movie deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting movie:", error.message);
+        res.status(500).json({ message: "Error deleting movie", error: error.message });
+    }
+};
 
+const searchMovies = async (req, res) => {
+    try {
+        const { title, genre, director, language } = req.body;
+        const filter = {};
+        if (title) filter.title = { $regex: title, $options: 'i' };
+        if (genre) filter.genre = { $regex: genre, $options: 'i' };
+        if (director) filter.director = { $regex: director, $options: 'i' };
+        if (language) filter.language = { $regex: language, $options: 'i' };
+        
+        const movies = await getMovies(filter);
+        res.status(200).json(movies);
+    } catch (error) {
+        console.error("Error fetching movies:", error.message);
+        res.status(500).json({ message: "Error searching movies", error: error.message });
+    }
+};
+
+const getMovieByNameController = async (req, res) => {
+    try {
+        const movieName = req.params.moviename;
+        if (!movieName || movieName.includes(":")) {
+            return res.status(400).json({ message: "Invalid movie name" });
+        }
+        const movie = await getMovieByName(movieName);
+        res.status(200).json({ movie });
+    } catch (error) {
+        console.error("Error fetching movie by name:", error.message);
+        res.status(500).json({ message: "Error fetching movie", error: error.message });
+    }
+};
 
 const getMoviesController = async (req, res) => {
-  const query = req.body;
-  console.log("Received Query:", query); 
-  try {
-      const movies = await getMovies(query);
-      console.log("Fetched Movies2:", movies); 
-      return res.status(200).json({ movies });
-  } catch (error) {
-      console.error("Controller Error:", error.message);
-      return res.status(500).json({ message: error.message });
-  }
+    try {
+        const query = req.body;
+        const movies = await getMovies(query);
+        res.status(200).json({ movies });
+    } catch (error) {
+        console.error("Error fetching movies:", error.message);
+        res.status(500).json({ message: "Error fetching movies", error: error.message });
+    }
 };
 
 const bookSeatController = async (req, res) => {
     try {
-        const { movieName, seatCategory, row, seatNumber, userId } = req.body; // Use movieName instead of movieId
-        const result = await bookSeat(movieName, seatCategory, row, seatNumber, userId);
+        const { movieName, theatreName, showTime, seatCategory, row, seatNumber } = req.body;
+        if (!movieName || !theatreName || !showTime || !seatCategory || !row || !seatNumber) {
+            return res.status(400).json({ message: "Missing required fields" });
+        }
+        const result = await bookSeat(movieName, theatreName, showTime, seatCategory, row, seatNumber);
         res.status(200).json(result);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error("Error booking seat:", error.message);
+        res.status(400).json({ message: "Error booking seat", error: error.message });
     }
 };
-module.exports = {createMovieController, updateMovieController, deleteMovieController, getMovieByNameController, getMoviesController, searchMovies, bookSeatController}
+
+module.exports = {
+    createMovieController,
+    updateMovieController,
+    deleteMovieController,
+    getMovieByNameController,
+    getMoviesController,
+    searchMovies,
+    bookSeatController
+};

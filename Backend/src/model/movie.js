@@ -12,33 +12,31 @@ const movieSchema = new Schema({
   rating: { type: Number, min: 0, max: 10 },
   duration: { type: Number, required: true },
   language: { type: String, required: true },
-  
+
   theatres: [
     {
       name: { type: String, required: true }, 
       location: { type: String, required: true }, 
-      showTimes: [{ type: String, required: true }] 
+      showTimes: [
+        {
+          time: { type: String, required: true },
+          availableSeats: {
+            premium: { rowA: [{ type: String }], rowB: [{ type: String }] },
+            regular: { rowC: [{ type: String }], rowD: [{ type: String }], rowE: [{ type: String }] },
+            recliner: { rowF: [{ type: String }] }
+          },
+          bookedSeats: {
+            premium: { rowA: [{ type: String }], rowB: [{ type: String }] },
+            regular: { rowC: [{ type: String }], rowD: [{ type: String }], rowE: [{ type: String }] },
+            recliner: { rowF: [{ type: String }] }
+          }
+        }
+      ]
     }
   ],
 
-  availableSeats: {
-    premium: {
-        rowA: [{type: String}],
-        rowB: [{type: String}]
-    },
-    regular: {
-        rowC: [{type: String}],
-        rowD: [{type: String}],
-        rowE: [{type: String}]
-    },
-    recliner: {
-        rowF: [{type: String}]
-    }
-  }, 
-  bookedSeats: [{ type: String, required: true }], 
   createdAt: { type: Date, default: Date.now }
 });
 
 const Movie = mongoose.model('Movie', movieSchema);
-
 module.exports = Movie;

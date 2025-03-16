@@ -1,23 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const { 
-  createTheatreController, 
-  getTheatresController, 
-  getTheatresByMovieController, 
-  getMoviesInTheatreController, 
-  updateTheatreController, 
-  deleteTheatreController, 
+const {
+  createTheatreController,
+  getTheatresController,
+  getTheatresByMovieController,
+  getMoviesInTheatreController,
+  updateTheatreController,
+  deleteTheatreController,
   bookSeatThroughTheatreController, searchTheatresController
 } = require("../controller/theatre");
 
-const {getTheatreWithSeatDetails}=require('../service/theatre')
+const { getTheatreWithSeatDetails } = require('../service/theatre')
 
 router.post("/search", searchTheatresController);
 router.post("/create", createTheatreController);
 
 router.get("/all", getTheatresController);
 
-router.get("/movies/:movieTitle",getTheatresByMovieController );
+router.get("/movies/:movieTitle", getTheatresByMovieController);
 
 router.get("/:theatreName/movies", getMoviesInTheatreController);
 
@@ -46,11 +46,20 @@ router.get("/seat-details/:theatreId", async (req, res) => {
       availableSeats: theatre.availableSeats || {},
       bookedSeats: theatre.bookedSeats || []
     });
-    
+
   } catch (error) {
     console.error("Error fetching seat details:", error);
     res.status(500).json({ error: "Internal server error" });
   }
+  app.get('/theatres/:theatreId/seats', async (req, res) => {
+    try {
+      const theatre = await Theatre.findById(req.params.theatreId).populate('seats');
+      res.json(theatre.seats);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
 });
 
 module.exports = router;

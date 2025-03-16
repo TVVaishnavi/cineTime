@@ -18,9 +18,13 @@ const TheatreSelect = () => {
         console.log("Fetching theatres for:", decodedTitle, "on date:", selectedDate);
 
         const response = await fetch(
-          `http://localhost:3800/api/movies/`
-        ,{method:'POST',        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({title:title})});
+          `http://localhost:3800/api/movies/`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title: title }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -38,36 +42,61 @@ const TheatreSelect = () => {
     };
 
     fetchTheatres();
-  }, [title, selectedDate]); 
+  }, [title, selectedDate]);
 
-  const handleShowtimeClick = async (theatre, showtime,tn) => {
+  const handleShowtimeClick = async (theatre, showtime, movieData) => {
     try {
-      console.log("Fetching seat details for theatre:", theatre._id);
-      
+      console.log("Clicked Showtime:", showtime);
+      console.log("Theatre Data:", theatre);
+      console.log("Movie Data:", movieData);
+
+      if (!showtime || !showtime.time) {
+        console.error("Showtime data is missing or incorrect.");
+        setError("Invalid showtime data.");
+        return;
+      }
+
+      const selectedMovie = movieData.find(m => m.theatres.some(t => t.name === theatre.name));
+
+      if (!selectedMovie) {
+        console.error("Movie data not found for selected theatre.");
+        setError("No seat data found for the selected showtime.");
+        return;
+      }
+
+      // Ensure availableSeats and bookedSeats exist
+      const availableSeats = selectedMovie.availableSeats?.[showtime.time] || {};
+      const bookedSeats = selectedMovie.bookedSeats?.[showtime.time] || [];
+
       const theatreWithSeats = {
         ...theatre,
-        showTime: showtime,
-        availableSeats: tn[0].availableSeats || {},  
-        bookedSeats: tn[0].bookedSeats || []  ,
-        movieTitle:tn[0].title
+        showTime: showtime.time, // Fix: Extract the time correctly
+        availableSeats:theatre.showTimes.filter((d)=>{
+          if(d.time===showtime.time) return d
+        })[0].availableSeats,
+        bookedSeats:theatre.showTimes.filter((d)=>{
+          if(d.time===showtime.time) return d
+        })[0].bookedSeats,
+        movieTitle: selectedMovie.title,
       };
-  
+
+      console.log("Navigating to TheatreLayout with data:", theatreWithSeats);
       navigate("/TheatreLayout", { state: { theatreData: theatreWithSeats } });
-      
+
     } catch (error) {
       console.error("Error fetching seat details:", error);
       setError(error.message);
     }
   };
-  
+
 
   return (
     <div className="theatre-container">
       {error && (
-      <div className="error-message">
-        Error: {error}
-        <button onClick={() => setError("")}>Dismiss</button>
-      </div>
+        <div className="error-message">
+          Error: {error}
+          <button onClick={() => setError("")}>Dismiss</button>
+        </div>
       )}
       <h2>Available Theatres for {decodeURIComponent(title)}</h2>
 
@@ -85,31 +114,27 @@ const TheatreSelect = () => {
       </div>
 
       {loading && <p>Loading theatres...</p>}
-      {error && <p>Error: {error}</p>}
       {!loading && !error && theatres.length === 0 && <p>No theatres found for this date.</p>}
-      
-      {!loading && !error &&
-        theatres[0].theatres
-        .map((theatre, index) => (
-          <div key={index} className="theatre-box">
-            <div className="theatre-info">
-              <h3 className="theatre-name">{theatre.name}</h3>
-              <p className="theatre-location">{theatre.location}</p>
-            </div>
-            <div className="showtimes">
-              {theatre.showTimes.map((showtime, idx) => (
-                <button
-                  key={idx}
-                  className="showtime-btn"
-                  onClick={() => handleShowtimeClick(theatre,showtime,theatres)}
-                >
-                  {showtime}
-                </button>
-              ))}
-            </div>
+
+      {!loading && !error && theatres.length > 0 && theatres[0].theatres.map((theatre, index) => (
+        <div key={index} className="theatre-box">
+          <div className="theatre-info">
+            <h3 className="theatre-name">{theatre.name}</h3>
+            <p className="theatre-location">{theatre.location}</p>
           </div>
-        ))
-      }
+          <div className="showtimes">
+            {theatre.showTimes.map((showtime, idx) => (
+              <button
+                key={idx}
+                className="showtime-btn"
+                onClick={() => handleShowtimeClick(theatre, showtime, theatres)}
+              >
+                {showtime.time}  {/* Fix: Extracting time property */}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
@@ -138,7 +163,7 @@ const formatDate = (dateString) => {
 const getFormattedDate = (offset) => {
   const date = new Date();
   date.setDate(date.getDate() + offset);
-  return date.toISOString().split("T")[0]; 
+  return date.toISOString().split("T")[0];
 };
 
 export default TheatreSelect;
