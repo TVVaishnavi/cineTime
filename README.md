@@ -1,8 +1,8 @@
-# bookMyShow 
+# CineTime
 
 ## Description
 
-This repository contains the backend for the BookMyShow application. The application is built using Express.js for the server, MongoDB for the database, and Jest for unit testing. Users can sign up and log in, browse movies and theatres, select seats, book tickets, and cancel bookings. Admins can directly log in to manage the system.
+This repository contains both the backend and frontend for the CineTime application. The backend is built using Express.js for the server, MongoDB for the database, and Jest for unit testing. The frontend is developed using React.js with HTML/CSS for the user interface. Users can sign up and log in, browse movies, select theatres, choose seats, and book tickets. The application also includes a user profile page. Admins can directly log in to manage the system. For UI testing, Cypress is used, and Percy is integrated for visual testing.
 
 ## Features
 
@@ -22,8 +22,8 @@ To install and run this project locally:
   bash
 
 ```
-git clonehttps://github.com/TVVaishnavi/bookMyShow.git
-cdbookMyShow
+git clone https://github.com/TVVaishnavi/cineTime.git
+cd cineTime
 ```
 
 * Install dependencies:
@@ -48,8 +48,14 @@ cp.env.example .env
   bash
 
 ```
-npm start
+   npm run dev
 ```
+
+* Start the app
+
+  ```
+  npm start
+  ```
 
 ## Usage
 
@@ -65,8 +71,8 @@ To run the application:
 POST /api/signup
 ```
 
-*     Login:
-            bash
+* Login:
+  bash
 
 ```
 POST /api/login
@@ -84,7 +90,7 @@ For support, you can reach out via:
 ### ✅ Phase 1: Initial Setup
 
 * [X] Set up **Express.js** for backend
-* [X] Set up **Reactjs** for frontend 
+* [X] Set up **Reactjs** for frontend
 * [X] Configure **MongoDB** for data storage
 * [X] Implement **User Authentication** (Signup/Login)
 * [X] Implement **Admin Login**
