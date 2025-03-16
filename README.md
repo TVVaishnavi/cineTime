@@ -2,7 +2,7 @@
 
 ## Description
 
-This repository contains both the backend and frontend for the CineTime application. The backend is built using Express.js for the server, MongoDB for the database, and Jest for unit testing. The Frontend is developed using React.js with HTML/CSS for the user interface. Users can sign up and log in, browse movies, select theatres, choose seats, and book tickets. The application also includes a user profile page. Admins can directly log in to manage the system. Cypress is used for UI testing, and Percy is integrated for visual testing.
+This repository contains both the backend and frontend for the CineTime application. The backend is built using Express.js for the server, MongoDB for the database, and Jest for unit testing. The frontend is developed using React.js with HTML/CSS for the user interface. Users can sign up and log in, browse movies, select theatres, choose seats, and book tickets. The application also includes a user profile page. Admins can directly log in to manage the system. For UI testing, Cypress is used, and Percy is integrated for visual testing.
 
 ## Features
 
@@ -48,16 +48,18 @@ cp.env.example .env
   bash
 
 ```
+
 cd Backend
 npm run dev
 ```
-*Start the app:
+
+* Start the app:
   bash
 
-```
-cd frontend
-npm start
-```
+  ```
+  cd frontend
+  npm start
+  ```
 
 ## Usage
 
@@ -73,8 +75,8 @@ To run the application:
 POST /api/signup
 ```
 
-*     Login:
-            bash
+* Login:
+  bash
 
 ```
 POST /api/login
@@ -92,7 +94,7 @@ For support, you can reach out via:
 ### ✅ Phase 1: Initial Setup
 
 * [X] Set up **Express.js** for backend
-* [X] Set up **Reactjs** for frontend 
+* [X] Set up **Reactjs** for frontend
 * [X] Configure **MongoDB** for data storage
 * [X] Implement **User Authentication** (Signup/Login)
 * [X] Implement **Admin Login**
