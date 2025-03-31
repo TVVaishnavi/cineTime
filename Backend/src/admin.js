@@ -1,6 +1,6 @@
 const User = require("../src/model/user")
 const bcrypt = require("bcrypt")
-const login = require("../src/controller/user")
+const login = require("./controller/user")
 const createAdminAccount = async () => {
 const email = process.env.ADMIN_EMAIL
 

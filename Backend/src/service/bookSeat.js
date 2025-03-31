@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Movie = require('../model/movie');
+const Movie = require('../../src/model/movies/movie');
 
 const bookSeat = async (movieName, seatCategory, row, seatNumber, userId, retries = 3) => {
     for (let attempt = 1; attempt <= retries; attempt++) {
